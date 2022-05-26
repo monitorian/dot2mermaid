@@ -6,7 +6,7 @@
   "main": "dot2mermaid.mjs",
   "types": "module",
   "scripts": {
-    "test": "node bin/inspect.js"
+    "inspect": "node bin/inspect.js"
   },
   "author": "monitorian",
   "license": "MIT",
