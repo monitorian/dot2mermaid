@@ -1,12 +1,12 @@
 ```mermaid
 flowchart TB
-        a-->A   
-        b-->B   
+        a[small_a]-->A[A]   
+        b[b]-->B[B]   
 
       subgraph cluster0
-        a-->b   
+        a[small_a]-->b[b]   
       end
       subgraph cluster1
-        A-->B   
+        A[A]-->B[large_B]   
       end
 ```

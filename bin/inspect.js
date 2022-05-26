@@ -14,10 +14,10 @@ Handlebars.registerHelper("node_check", function (value1, value2) {
 
 let demo = `digraph D {
   subgraph cluster0 {
-    a  -> b
+    a [label=small_a] -> b
  }
  subgraph cluster1 {
-    A -> B
+    A -> B[label=large_B]
  }
  a -> A
  b -> B
@@ -29,14 +29,14 @@ let graphContext = new Dot2MermaidAdapter(demo).getGraphContext();
 let mermaidFlowchartTemplate = Handlebars.compile(`
 flowchart {{direction}}
   {{#each edges as |e|}}
-        {{e.from}}-->{{e.to}}   
+        {{e.from}}[{{e.fromLabel}}]-->{{e.to}}[{{e.toLabel}}]   
   {{/each}}
 
   {{#if subgraphs}}
     {{#each subgraphs as |s|}}
       subgraph {{s.label}}
       {{#each s.edges as |e|}}
-        {{e.from}}-->{{e.to}}   
+        {{e.from}}[{{e.fromLabel}}]-->{{e.to}}[{{e.toLabel}}]   
       {{/each}}      
       end
     {{/each}}      

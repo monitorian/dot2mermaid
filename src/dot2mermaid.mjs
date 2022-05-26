@@ -10,6 +10,25 @@ export default class DotMermaidAdapter {
     return this.graphContext;
   }
 
+  updateLabel(graphContext){
+    graphContext.edges.forEach((edge) => {
+      graphContext.nodes.forEach((node) =>{
+        // If DOT data does not have label, node.label is the same node.id, so it does not need to check the condition.
+        if(edge.from === node.id){
+          edge.fromLabel = node.label;
+        }
+        if(edge.to === node.id){
+           edge.toLabel = node.label;
+           // node.label of vis-network does not have a label of edge.to, so it could not input the right label now.
+           // edge.label has right label of edge.to, so the following condition is checked. 
+           if(edge.label){
+            edge.toLabel = edge.label;
+          }           
+        }             
+      });
+    });
+  }
+
   decorateDotAttrs(dotSource) {
     let subgraphs = new Array(0);
     let subgraphFlag = false;
@@ -29,6 +48,7 @@ export default class DotMermaidAdapter {
         case /}/.test(element):
           if (subgraphFlag) {
             subgraphFlag = false;
+            this.updateLabel(subGraphContext);
             const copied = _.cloneDeep(subGraphContext);
             subgraphs.push(copied);
           }
@@ -47,6 +67,7 @@ export default class DotMermaidAdapter {
 
     // Parse parent graph
     let parsedData = vis.parseDOTNetwork(dotSource);
+    this.updateLabel(parsedData);
 
     let direction = "TB";
 
