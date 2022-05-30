@@ -10,21 +10,21 @@ export default class DotMermaidAdapter {
     return this.graphContext;
   }
 
-  updateLabel(graphContext){
+  updateLabel(graphContext) {
     graphContext.edges.forEach((edge) => {
-      graphContext.nodes.forEach((node) =>{
+      graphContext.nodes.forEach((node) => {
         // If DOT data does not have label, node.label is the same node.id, so it does not need to check the condition.
-        if(edge.from === node.id){
+        if (edge.from === node.id) {
           edge.fromLabel = node.label;
         }
-        if(edge.to === node.id){
-           edge.toLabel = node.label;
-           // node.label of vis-network does not have a label of edge.to, so it could not input the right label now.
-           // edge.label has right label of edge.to, so the following condition is checked. 
-           if(edge.label){
+        if (edge.to === node.id) {
+          edge.toLabel = node.label;
+          // node.label of vis-network does not have a label of edge.to, so it could not input the right label now.
+          // edge.label has right label of edge.to, so the following condition is checked.
+          if (edge.label) {
             edge.toLabel = edge.label;
-          }           
-        }             
+          }
+        }
       });
     });
   }
@@ -40,27 +40,32 @@ export default class DotMermaidAdapter {
       switch (true) {
         case /subgraph/.test(element):
           subgraphFlag = true;
-          subgraphContents = null;          
+          subgraphContents = null;
           let words = element.split(/\s+/);
           words = words.filter(function (s) {
             return s !== "";
           });
-          subGraphContext.label = words[1].replace(/[\""]/g,"");
+          subGraphContext.label = words[1].replace(/[\""]/g, "");
           break;
         case /}/.test(element):
-          if (subgraphFlag) {
-            subgraphFlag = false;
+          if (/{/.test(element)) {
+            subgraphContents += element;
+          } else {
+            if (subgraphFlag) {
+              subgraphFlag = false;
 
-            const subgraphHeader = "digraph " + subGraphContext.label + " {";
-            const subgraphFooter = "}";
-            const subgraphDotSource = subgraphHeader + subgraphContents + subgraphFooter;            
-            const parseData = vis.parseDOTNetwork(subgraphDotSource);
-            subGraphContext.nodes = parseData.nodes;
-            subGraphContext.edges = parseData.edges;
+              const subgraphHeader = "digraph " + subGraphContext.label + " {";
+              const subgraphFooter = "}";
+              const subgraphDotSource =
+                subgraphHeader + subgraphContents + subgraphFooter;
+              const parseData = vis.parseDOTNetwork(subgraphDotSource);
+              subGraphContext.nodes = parseData.nodes;
+              subGraphContext.edges = parseData.edges;
 
-            this.updateLabel(subGraphContext);
-            const copied = _.cloneDeep(subGraphContext);
-            subgraphs.push(copied);
+              this.updateLabel(subGraphContext);
+              const copied = _.cloneDeep(subGraphContext);
+              subgraphs.push(copied);
+            }
           }
           break;
         default:

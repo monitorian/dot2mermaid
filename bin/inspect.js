@@ -30,14 +30,14 @@ let graphContext = new Dot2MermaidAdapter(demo).getGraphContext();
 let mermaidFlowchartTemplate = Handlebars.compile(`
 flowchart {{direction}}
   {{#each edges as |e|}}
-        {{e.from}}[{{e.fromLabel}}]-->{{e.to}}[{{e.toLabel}}]   
+        {{e.from}}["{{e.fromLabel}}"]-->{{e.to}}["{{e.toLabel}}"]   
   {{/each}}
 
   {{#if subgraphs}}
     {{#each subgraphs as |s|}}
       subgraph {{s.label}}
       {{#each s.edges as |e|}}
-        {{e.from}}[{{e.fromLabel}}]-->{{e.to}}[{{e.toLabel}}]   
+        {{e.from}}["{{e.fromLabel}}"]-->{{e.to}}["{{e.toLabel}}"]   
       {{/each}}      
       end
     {{/each}}      
