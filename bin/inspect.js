@@ -18,6 +18,7 @@ let demo = `digraph D {
  }
  subgraph cluster1 {
     A -> B[label=large_B]
+    B[label=large_B] -> C
  }
  a -> A
  b -> B

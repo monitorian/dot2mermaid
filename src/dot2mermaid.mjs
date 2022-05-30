@@ -31,6 +31,7 @@ export default class DotMermaidAdapter {
 
   decorateDotAttrs(dotSource) {
     let subgraphs = new Array(0);
+    let subgraphContents = null;
     let subgraphFlag = false;
     let subGraphContext = { label: null, nodes: null, edges: null };
 
@@ -39,15 +40,24 @@ export default class DotMermaidAdapter {
       switch (true) {
         case /subgraph/.test(element):
           subgraphFlag = true;
+          subgraphContents = null;          
           let words = element.split(/\s+/);
           words = words.filter(function (s) {
             return s !== "";
           });
-          subGraphContext.label = words[1];
+          subGraphContext.label = words[1].replace(/[\""]/g,"");
           break;
         case /}/.test(element):
           if (subgraphFlag) {
             subgraphFlag = false;
+
+            const subgraphHeader = "digraph " + subGraphContext.label + " {";
+            const subgraphFooter = "}";
+            const subgraphDotSource = subgraphHeader + subgraphContents + subgraphFooter;            
+            const parseData = vis.parseDOTNetwork(subgraphDotSource);
+            subGraphContext.nodes = parseData.nodes;
+            subGraphContext.edges = parseData.edges;
+
             this.updateLabel(subGraphContext);
             const copied = _.cloneDeep(subGraphContext);
             subgraphs.push(copied);
@@ -55,12 +65,7 @@ export default class DotMermaidAdapter {
           break;
         default:
           if (subgraphFlag) {
-            const subgraphHeader = "digraph " + subGraphContext.label + " {";
-            const subgraphFooter = "}";
-            const subgraphDotSource = subgraphHeader + element + subgraphFooter;
-            const parseData = vis.parseDOTNetwork(subgraphDotSource);
-            subGraphContext.nodes = parseData.nodes;
-            subGraphContext.edges = parseData.edges;
+            subgraphContents += element;
           }
       }
     });
