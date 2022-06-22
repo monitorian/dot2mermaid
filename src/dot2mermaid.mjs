@@ -30,17 +30,19 @@ export default class DotMermaidAdapter {
   }
 
   decorateDotAttrs(dotSource) {
+    let parentContents ="";
     let subgraphs = new Array(0);
-    let subgraphContents = null;
+    let subgraphContents = "";
     let subgraphFlag = false;
     let subGraphContext = { label: null, nodes: null, edges: null };
 
-    let dotSources = dotSource.split(/\n/);
+    // Parse sub graph    
+    let dotSources = dotSource.split(/\n/);    
     dotSources.forEach((element) => {
       switch (true) {
         case /subgraph/.test(element):
           subgraphFlag = true;
-          subgraphContents = null;
+          subgraphContents = "";
           let words = element.split(/\s+/);
           words = words.filter(function (s) {
             return s !== "";
@@ -49,7 +51,12 @@ export default class DotMermaidAdapter {
           break;
         case /}/.test(element):
           if (/{/.test(element)) {
-            subgraphContents += element;
+//            let labelStr = element.replace(/\\{1}\"/g, "");
+            let labelStr = element.replace(/[\\\"]/g, ""); 
+            labelStr = labelStr.replace(/(label=)/g, '$1\"');
+            labelStr = labelStr.replace(/(})/g, '$1\"');            
+            console.log(labelStr);           
+            subgraphContents += labelStr;
           } else {
             if (subgraphFlag) {
               subgraphFlag = false;
@@ -65,18 +72,23 @@ export default class DotMermaidAdapter {
               this.updateLabel(subGraphContext);
               const copied = _.cloneDeep(subGraphContext);
               subgraphs.push(copied);
+            }else{
+              parentContents += element;              
             }
           }
           break;
         default:
           if (subgraphFlag) {
             subgraphContents += element;
+            console.log(subgraphContents);
+          }else{
+            parentContents += element;
           }
       }
     });
-
+    console.log(parentContents);
     // Parse parent graph
-    let parsedData = vis.parseDOTNetwork(dotSource);
+    let parsedData = vis.parseDOTNetwork(parentContents);
     this.updateLabel(parsedData);
 
     let direction = "TB";

@@ -1,0 +1,11 @@
+digraph D {
+  subgraph cluster0 {
+    a [label=small_a] -> b
+ }
+ subgraph cluster1 {
+    A -> B[label=large_B]
+    B[label=large_B] -> C
+ }
+ a -> A
+ b -> B
+}

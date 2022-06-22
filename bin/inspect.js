@@ -12,7 +12,13 @@ Handlebars.registerHelper("node_check", function (value1, value2) {
   return value1 === value2;
 });
 
-let demo = `digraph D {
+const dotfile = "./test.dot";
+let demo = null;
+
+ if (fs.existsSync(dotfile)) {
+   demo = fs.readFileSync(dotfile, "utf-8");
+ } else {
+  demo = `digraph D {
   subgraph cluster0 {
     a [label=small_a] -> b
  }
@@ -24,6 +30,7 @@ let demo = `digraph D {
  b -> B
 }
 `;
+}
 
 let graphContext = new Dot2MermaidAdapter(demo).getGraphContext();
 
