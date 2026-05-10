@@ -2,7 +2,7 @@
   "name": "dot2mermaid",
   "type": "module",
   "version": "0.0.1",
-  "description": "convert dot to mermaid",
+  "description": "Convert Graphviz DOT graphs to Mermaid flowcharts for documentation and CI-generated diagrams.",
   "main": "src/index.mjs",
   "exports": {
     ".": "./src/index.mjs"
@@ -10,9 +10,31 @@
   "bin": {
     "dot2mermaid": "./bin/cli.js"
   },
+  "files": [
+    "bin",
+    "docs",
+    "examples",
+    "src",
+    "README.md"
+  ],
   "scripts": {
     "inspect": "node bin/inspect.js",
-    "convert": "node bin/cli.js"
+    "convert": "node bin/cli.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "dot",
+    "graphviz",
+    "mermaid",
+    "flowchart",
+    "diagram",
+    "markdown",
+    "documentation",
+    "ci"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/monitorian/dot2mermaid.git"
   },
   "author": "monitorian",
   "license": "MIT",
