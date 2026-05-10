@@ -1,0 +1,10 @@
+flowchart LR
+  Test["Test"]-->Package["Package"]
+
+  subgraph cluster_prepare
+    Plan["Plan"]-->Build["Build"]
+    Build["Build"]-->Test["CI"]
+  end
+  subgraph cluster_publish
+    Package["Package"]-->Publish["Publish"]
+  end

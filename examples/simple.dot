@@ -1,0 +1,5 @@
+digraph G {
+  Start -> Build
+  Build -> Test [label="Unit tests"]
+  Test -> Deploy
+}

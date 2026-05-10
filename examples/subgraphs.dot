@@ -1,0 +1,10 @@
+digraph Release {
+  subgraph cluster_prepare {
+    Plan -> Build
+    Build -> Test [label=CI]
+  }
+  subgraph cluster_publish {
+    Package -> Publish
+  }
+  Test -> Package
+}
