@@ -3,10 +3,16 @@
   "type": "module",
   "version": "0.0.1",
   "description": "convert dot to mermaid",
-  "main": "dot2mermaid.mjs",
-  "types": "module",
+  "main": "src/index.mjs",
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "bin": {
+    "dot2mermaid": "./bin/cli.js"
+  },
   "scripts": {
-    "inspect": "node bin/inspect.js"
+    "inspect": "node bin/inspect.js",
+    "convert": "node bin/cli.js"
   },
   "author": "monitorian",
   "license": "MIT",

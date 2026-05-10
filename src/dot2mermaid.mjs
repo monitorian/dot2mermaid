@@ -2,7 +2,8 @@ import vis from "vis-network";
 import _ from "lodash";
 
 export default class DotMermaidAdapter {
-  constructor(dotSource) {
+  constructor(dotSource, options = {}) {
+    this.options = options;
     this.graphContext = this.decorateDotAttrs(dotSource);
   }
 
@@ -55,7 +56,6 @@ export default class DotMermaidAdapter {
             let labelStr = element.replace(/[\\\"]/g, ""); 
             labelStr = labelStr.replace(/(label=)/g, '$1\"');
             labelStr = labelStr.replace(/(})/g, '$1\"');            
-            console.log(labelStr);           
             subgraphContents += labelStr;
           } else {
             if (subgraphFlag) {
@@ -80,18 +80,16 @@ export default class DotMermaidAdapter {
         default:
           if (subgraphFlag) {
             subgraphContents += element;
-            console.log(subgraphContents);
           }else{
             parentContents += element;
           }
       }
     });
-    console.log(parentContents);
     // Parse parent graph
     let parsedData = vis.parseDOTNetwork(parentContents);
     this.updateLabel(parsedData);
 
-    let direction = "TB";
+    let direction = this.options.direction || "TB";
 
     let graphContext = {
       name: "test",
