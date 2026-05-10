@@ -1,7 +1,7 @@
 {
   "name": "dot2mermaid",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Convert Graphviz DOT graphs to Mermaid flowcharts for documentation and CI-generated diagrams.",
   "main": "src/index.mjs",
   "exports": {
