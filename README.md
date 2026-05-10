@@ -40,13 +40,9 @@ After running the script, you can get the following result.
 
 # Note
 
-- Mermaid does not indicate [label](https://mermaid-js.github.io/mermaid/#/flowchart) of parent graph if subgraph does not have [label](https://graphviz.org/docs/attrs/label/) .
-- The default maximum text size is 50,000.([mermaid:defaultConfig.js](https://github.com/mermaid-js/mermaid/blob/develop/src/defaultConfig.js#L39)). If big DOT file is converted, Mermaid says "Maximum text size in diagram exceeded.".([mermaid:mermaidAPI.js](https://github.com/mermaid-js/mermaid/blob/develop/src/mermaidAPI.js#L269))
+- Mermaid does not indicate [label](https://mermaid.js.org/syntax/flowchart.html) of parent graph if subgraph does not have [label](https://graphviz.org/docs/attrs/label/) .
+- The default maximum text size is 50,000.([Mermaid config: `maxTextSize`](https://mermaid.js.org/config/schema-docs/config-properties-maxtextsize.html)). If a big DOT file is converted, Mermaid may show "Maximum text size in diagram exceeded." ([Mermaid configuration](https://mermaid.js.org/config/configuration.html)).
 
-## Why `.mjs`?
-
-This project uses ESM (`"type": "module"`), and `.mjs` makes module format explicit.
-It is also helpful when code is executed in mixed/legacy Node.js environments where extension-based module detection avoids ambiguity.
 
 # License
 "dot2mermaid" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
